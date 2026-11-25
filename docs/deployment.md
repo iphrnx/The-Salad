@@ -4,7 +4,7 @@ The Next.js app builds for Cloudflare Workers with OpenNext. Supabase provides a
 
 ## App build
 
-`npm ci` installs the locked dependencies. `npm run typecheck`, `npm run lint`, and `npm run build` are local checks; the build does not deploy. The Worker configuration is in `wrangler.jsonc` and `open-next.config.ts`. `npm run build:next` builds the Next.js standalone output without the Worker adapter.
+`npm ci` installs the locked dependencies. `npm run typecheck`, `npm run lint`, and `npm run build` are local checks; the build does not deploy. `wrangler.jsonc` names the independent `the-salad` Worker and its self-reference binding. Do not override either to point to a previous deployment. `npm run build:next` builds the Next.js standalone output without the Worker adapter.
 
 | App variable | Purpose |
 |---|---|
@@ -32,4 +32,4 @@ Supabase supplies its URL and API keys to Edge Functions. Keep private integrati
 
 ## Database
 
-Phase 1 retains `supabase/migrations/` unchanged as the authoritative schema reference for the next phase. Do not apply migrations or deploy from this cleanup phase.
+The database rebuild is not ready to deploy. The active migration files are retained as historical inputs; they are not a complete fresh-install schema. Do not apply them to a hosted project. Validate the consolidated baseline on an empty local Supabase stack and obtain approval before any deployment to The Salad's hosted project.

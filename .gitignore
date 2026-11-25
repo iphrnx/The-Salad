@@ -20,8 +20,9 @@ server.log
 npm-debug.log*
 
 # Environment
-.env
-.env*.local
+.env*
+!.env.example
+.dev.vars*
 
 # OS & Editor
 .DS_Store
@@ -32,6 +33,7 @@ npm-debug.log*
 # Supabase local
 .supabase/
 supabase/.temp/
+supabase/.branches/
 
 # Cloudflare & OpenNext
 .open-next/
