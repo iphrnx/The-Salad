@@ -1,5 +1,4 @@
 // deno-lint-ignore-file no-explicit-any
-import { admin } from "./db.ts";
 import { hmacSha256Hex, paymentSignatureCandidates, signatureMatches } from "./signature.ts";
 
 /**
@@ -310,26 +309,6 @@ export async function cancelSubscription(
   });
   if (!res.ok) return { ok: false, error: res.error };
   return { ok: true };
-}
-
-/**
- * The restaurant a Razorpay subscription belongs to.
- *
- * The tenant id travels in the subscription's notes, which Razorpay echoes
- * back on every webhook. The webhook itself is signed, so the notes cannot
- * be forged by anyone else.
- */
-export async function tenantFromNotes(
-  notes: Record<string, string> | undefined | null,
-): Promise<string | null> {
-  const tenantId = notes?.tenant_id ?? notes?.tenantId ?? null;
-  if (!tenantId) return null;
-  const { data } = await admin()
-    .from("tenants")
-    .select("id")
-    .eq("id", tenantId)
-    .maybeSingle();
-  return data?.id ?? null;
 }
 
 export type RazorpayPayment = {

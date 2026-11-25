@@ -5,8 +5,7 @@
  * "signature", "popular"…) is dropped here rather than saved: a tag the
  * owner cannot see or edit in Menu Management should not exist on a dish.
  *
- * The frontend copy lives at src/lib/menu-tags.ts — the two are kept
- * behaviour-identical by scripts/test-menu-tags.mts.
+ * Keep the frontend copy at src/lib/menu-tags.ts in sync.
  */
 export const CANONICAL_MENU_TAGS = [
   "VEG",

@@ -3,9 +3,7 @@
 /**
  * Normalisation for AI-extracted menu data.
  *
- * A pure module — no Deno, no network, no environment — so the edge function
- * and the offline test suite (`tsx scripts/test-menu-normalize.mts`) share
- * exactly the same code.
+ * A pure module with no Deno, network, or environment dependencies.
  *
  * What the AI gives us is raw text lifted off a photo: the same dish twice,
  * the portion inside the name ("Chicken Tikka (8 pcs)"), a category spelled

@@ -14,8 +14,11 @@ import { execFileSync } from "node:child_process";
 import { readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 
-const PROJECT_ID = process.env.SUPABASE_PROJECT_ID ?? 
-  (process.env.NEXT_PUBLIC_SUPABASE_URL ? new URL(process.env.NEXT_PUBLIC_SUPABASE_URL).hostname.split(".")[0] : "jeuixphibaasbxgaexfg");
+const PROJECT_ID = process.env.SUPABASE_PROJECT_ID?.trim();
+if (!PROJECT_ID || !/^[a-z0-9]{20}$/.test(PROJECT_ID)) {
+  console.error("Set SUPABASE_PROJECT_ID explicitly to the intended Supabase project ref.");
+  process.exit(1);
+}
 const ROOT = "supabase/functions";
 
 const name = process.argv[2];
@@ -61,12 +64,11 @@ writeFileSync(
 );
 
 console.log(`deploying "${name}" (${files.length} files, entrypoint ${entrypoint})`);
-// MCP_AGENT lets a subagent (which may not itself hold the supaletta server)
-// delegate the MCP call to the agent that does. Unset in normal use.
+// MCP_AGENT selects an agent with access to the deployment tool, if needed.
 const agentArgs = process.env.MCP_AGENT ? ["--agent", process.env.MCP_AGENT] : [];
 const out = execFileSync(
   "letta",
-  ["mcp", "call", "mcp__supaletta__deploy_edge_function", "--args-file", argsPath, ...agentArgs],
+  ["mcp", "call", process.env.MCP_DEPLOY_TOOL || "deploy_edge_function", "--args-file", argsPath, ...agentArgs],
   { encoding: "utf8" },
 );
 
@@ -76,3 +78,4 @@ const text = parsed.content?.[0]?.text ?? "";
 const slug = /"slug"\s*:\s*"([^"]+)"/.exec(text)?.[1];
 const ok = parsed.isError !== true && (slug === undefined || slug === name);
 console.log(ok ? "ok" : "FAILED", `deployed slug=${slug ?? "?"}`, text.slice(0, 200));
+if (!ok) process.exitCode = 1;
