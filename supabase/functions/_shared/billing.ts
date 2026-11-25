@@ -150,27 +150,6 @@ export function checkoutMatches(args: {
 }
 
 /**
- * Is this delivery older than the state the subscription has already reached?
- *
- * Razorpay retries, and deliveries can arrive out of order. An event that is
- * older than the newest one already applied is recorded (so a retry is not
- * re-processed) but not acted on, or a `subscription.cancelled` from before a
- * renewal could cancel a subscription that has since been paid for.
- *
- * The database applies this rule as well, in `apply_subscription_event`, where
- * the cursor read and the delivery insert happen in one transaction — this is
- * the same rule, kept here so it can be exercised without a database.
- */
-export function isStaleEvent(args: {
-  eventCreatedAt: Date | null;
-  cursorAt: Date | null;
-}): boolean {
-  const { eventCreatedAt, cursorAt } = args;
-  if (!eventCreatedAt || !cursorAt) return false;
-  return eventCreatedAt.getTime() < cursorAt.getTime();
-}
-
-/**
  * What to do with the payment a checkout row already names.
  *
  * Activation happens once per payment. Calling verify again with the same

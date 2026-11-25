@@ -14,6 +14,11 @@ import { join } from "node:path";
 
 const ROOT = "supabase/functions";
 
+if (!/^[a-z0-9]{20}$/.test(process.env.SUPABASE_PROJECT_ID?.trim() ?? "")) {
+  console.error("Set SUPABASE_PROJECT_ID explicitly to the intended Supabase project ref.");
+  process.exit(1);
+}
+
 const names = readdirSync(ROOT, { withFileTypes: true })
   .filter((e) => e.isDirectory() && !e.name.startsWith("_"))
   .map((e) => e.name)

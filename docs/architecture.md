@@ -3,10 +3,10 @@
 ## Directory Structure
 
 ```
-Saladcode/
-├── docs/                       # Architecture, audit, deployment, and migration docs
+The-Salad/
+├── docs/                       # Architecture and deployment notes
 ├── public/                     # Static assets and marketing screenshots
-├── scripts/                    # 127 test, verification, deployment, and ops scripts
+├── scripts/                    # Edge Function deployment helpers
 ├── src/
 │   ├── app/                    # Next.js App Router pages, SEO routes, and Super Admin proxy APIs
 │   ├── components/
@@ -23,9 +23,8 @@ Saladcode/
 │   │   └── views/              # Core app views (dashboard, orders, menu, qr, promos, analytics, roles, security, settings)
 │   └── lib/                    # Client utilities, permissions, pricing, cart, Supabase clients, hooks
 └── supabase/
-    ├── functions/              # 27 Deno Edge Functions + _shared/ (40 modules)
-    ├── migrations/             # 85 SQL migrations (0001–0085)
-    └── reset-to-empty.sql      # Strips demo seed data for clean production starts
+    ├── functions/              # 27 Deno Edge Functions and shared runtime modules
+    └── migrations/             # 36 active migrations retained unchanged
 ```
 
 ## Routing Model (`src/app/`)

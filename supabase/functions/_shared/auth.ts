@@ -32,9 +32,6 @@ export type GuardResult =
   | { ok: true; session: Session }
   | { ok: false; response: Response };
 
-const UUID_RE =
-  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-
 /** The `session_id` claim of a Supabase access token, without verifying it —
  * `ownerSession()` only calls this after `auth.getUser()` has verified the
  * token itself. Used to badge the caller's own session on the Security page. */
@@ -253,22 +250,6 @@ export async function guard(
   }
 
   return { ok: true, session };
-}
-
-/**
- * Resolve a tenant for a genuinely public route from an explicit
- * `?tenant=` / `x-tenant-id` value only — never a "pick one for me" fallback.
- */
-export async function publicTenantId(req: Request): Promise<string | null> {
-  const key = claimedTenant(req);
-  if (!key) return null;
-  const db = admin();
-  if (UUID_RE.test(key)) {
-    const { data } = await db.from("tenants").select("id").eq("id", key).maybeSingle();
-    if (data?.id) return data.id;
-  }
-  const { data } = await db.from("tenants").select("id").eq("slug", key).maybeSingle();
-  return data?.id ?? null;
 }
 
 /** Validate a diner's table-session token. Public route helper. */

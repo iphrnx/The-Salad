@@ -22,9 +22,6 @@
 //   - everything further right is Supabase infrastructure and must never be
 //     reported as the client — the egress pool is exactly the "internal
 //     proxy IP" a naive rightmost-entry implementation would leak.
-//
-// If Supabase's gateway behaviour ever changes, the spoof tests in
-// scripts/test-security-offline.mts pin the rule this module implements.
 
 const IPV4 = /^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/;
 // Loose but strict-enough v6: hex groups, colons, optional "::", optional
